@@ -1,9 +1,9 @@
 // Verilated -*- C++ -*-
 // DESCRIPTION: Verilator output: Symbol table implementation internals
 
-#include "Vour__pch.h"
+#include "Vmodule__pch.h"
 
-Vour__Syms::Vour__Syms(VerilatedContext* contextp, const char* namep, Vour* modelp)
+Vmodule__Syms::Vmodule__Syms(VerilatedContext* contextp, const char* namep, Vmodule* modelp)
     : VerilatedSyms{contextp}
     // Setup internal state of the Syms class
     , __Vm_modelp{modelp}
@@ -22,7 +22,7 @@ Vour__Syms::Vour__Syms(VerilatedContext* contextp, const char* namep, Vour* mode
     // Setup scopes
 }
 
-Vour__Syms::~Vour__Syms() {
+Vmodule__Syms::~Vmodule__Syms() {
     // Tear down scopes
     // Tear down sub module instances
 }

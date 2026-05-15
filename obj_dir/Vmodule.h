@@ -5,19 +5,19 @@
 // The class here is then constructed to instantiate the design.
 // See the Verilator manual for examples.
 
-#ifndef VERILATED_VOUR_H_
-#define VERILATED_VOUR_H_  // guard
+#ifndef VERILATED_VMODULE_H_
+#define VERILATED_VMODULE_H_  // guard
 
 #include "verilated.h"
 
-class Vour__Syms;
-class Vour___024root;
+class Vmodule__Syms;
+class Vmodule___024root;
 
 // This class is the main interface to the Verilated model
-class alignas(VL_CACHE_LINE_BYTES) Vour VL_NOT_FINAL : public VerilatedModel {
+class alignas(VL_CACHE_LINE_BYTES) Vmodule VL_NOT_FINAL : public VerilatedModel {
   private:
     // Symbol table holding complete model state (owned by this class)
-    Vour__Syms* const vlSymsp;
+    Vmodule__Syms* const vlSymsp;
 
   public:
 
@@ -35,19 +35,19 @@ class alignas(VL_CACHE_LINE_BYTES) Vour VL_NOT_FINAL : public VerilatedModel {
 
     // Root instance pointer to allow access to model internals,
     // including inlined /* verilator public_flat_* */ items.
-    Vour___024root* const rootp;
+    Vmodule___024root* const rootp;
 
     // CONSTRUCTORS
     /// Construct the model; called by application code
     /// If contextp is null, then the model will use the default global context
     /// If name is "", then makes a wrapper with a
     /// single model invisible with respect to DPI scope names.
-    explicit Vour(VerilatedContext* contextp, const char* name = "TOP");
-    explicit Vour(const char* name = "TOP");
+    explicit Vmodule(VerilatedContext* contextp, const char* name = "TOP");
+    explicit Vmodule(const char* name = "TOP");
     /// Destroy the model; called (often implicitly) by application code
-    virtual ~Vour();
+    virtual ~Vmodule();
   private:
-    VL_UNCOPYABLE(Vour);  ///< Copying not allowed
+    VL_UNCOPYABLE(Vmodule);  ///< Copying not allowed
 
   public:
     // API METHODS
