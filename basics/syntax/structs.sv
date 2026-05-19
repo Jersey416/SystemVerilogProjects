@@ -34,3 +34,12 @@ initial begin
 end
 
 endmodule
+
+/*** OUTPUT ***
+
+cpus:         25  gpus:         13  money:5321.98
+cpus:         14  gpus:          4  money:12.32
+cpus:          1  gpus:          1  money:1.00
+cpus:         10  gpus:         10  money:543.21
+
+***/

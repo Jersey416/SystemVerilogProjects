@@ -15,7 +15,7 @@ VL_ATTR_COLD void Vmodule___024root___eval_initial(Vmodule___024root* vlSelf) {
     Vmodule__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     auto& vlSelfRef = std::ref(*vlSelf).get();
     // Body
-    VL_WRITEF_NX("r0 = 0x5a \nr1 = 0x0\n\n\nr0 = 0xff \nr1 = 0x0\n",0);
+    VL_WRITEF_NX("r0 = 0x5a \nr1 = 0x0\n\nr0 = 0xff \nr1 = 0x0\n",0);
 }
 
 VL_ATTR_COLD void Vmodule___024root___eval_initial__TOP(Vmodule___024root* vlSelf) {
@@ -23,7 +23,7 @@ VL_ATTR_COLD void Vmodule___024root___eval_initial__TOP(Vmodule___024root* vlSel
     Vmodule__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     auto& vlSelfRef = std::ref(*vlSelf).get();
     // Body
-    VL_WRITEF_NX("r0 = 0x5a \nr1 = 0x0\n\n\nr0 = 0xff \nr1 = 0x0\n",0);
+    VL_WRITEF_NX("r0 = 0x5a \nr1 = 0x0\n\nr0 = 0xff \nr1 = 0x0\n",0);
 }
 
 VL_ATTR_COLD void Vmodule___024root___eval_final(Vmodule___024root* vlSelf) {
