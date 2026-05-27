@@ -16,9 +16,9 @@ module alu(
         alu_flags_t flags;
     } alu_return_t;
     
-    always_ff @(posedge clk) begin
-
+    always_comb begin : alu_main
         alu_return_t ret;
+        ret = no_op();
         case(mode)
         
         NOT: begin
@@ -62,10 +62,15 @@ module alu(
         end
         endcase 
 
-        rd              <= ret.result;
-        sr_alu_flags    <= ret.flags;
+        rd              = ret.result;
+        sr_alu_flags    = ret.flags;
         
     end
+
+    always_ff @( posedge clk ) begin : divider
+        
+    end
+
 
     function automatic alu_return_t no_op();
         alu_return_t ret = '0;
@@ -114,7 +119,7 @@ module alu(
     endfunction
 
     function automatic alu_return_t op_add(                                      //updates all flags
-        logic[31:0] p_rs1, p_rs2 
+        logic[31:0] p_rs1, p_rs2
     );
         alu_flags_t flags = '0;
         logic[32:0] tmp = {1'b0, p_rs1} + {1'b0, p_rs2};

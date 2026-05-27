@@ -40,8 +40,9 @@ module tb_alu;
 
             #1; // wait for combinational + posedge logic
 
-            $display("OP=%0d a=%0d b=%0d result=%0d flags=%b",
-                     $unsigned(op), a, b, rd, sr_alu_flags);
+            $display("OP=%0d a=%0d b=%0d result=%0d flags: n=%d c=%d v=%d z=%d",
+                     $unsigned(op), a, b, $signed(rd), sr_alu_flags.n, 
+                     sr_alu_flags.c, sr_alu_flags.v, sr_alu_flags.z);
 
             if (rd !== expected) begin
                 $error("FAIL: expected %0d got %0d", expected, rd);
@@ -59,9 +60,10 @@ module tb_alu;
         #10;
 
         // TESTS
-        run_test(ADD, 10, 5, 15);   // ADD
-        run_test(SUB, 10, 5, 5);    // SUB (example)
-        run_test(MUL, 10, 5, 50);   // MUL (example)
+        run_test(AND, 32'b0101, 32'b011, 32'b001);   // ADD
+        run_test(ADD, 32'h7FFFFFFF, 32'h1, 32'h80000000);   // ADD
+        run_test(SUB, 10, 10, 0);    // SUB (example)
+        run_test(ADD, 32'hFFFFFFFF, 32'h1, 0);   // MUL (example)
 
         $display("All tests done.");
         $finish;
