@@ -77,8 +77,8 @@ module alu(
         return ret;
     endfunction
 
-    function automatic alu_return_t op_not(                                      //no carry or ovfl for not
-        logic[31:0] p_rs1
+    function automatic alu_return_t op_not(         //no carry or ovfl for not
+        logic[31:0] p_rs1                           //tested
     ); 
         logic[31:0] ret = ~p_rs1;
         alu_flags_t flags = '0;
@@ -87,8 +87,8 @@ module alu(
         return {ret, flags};
     endfunction
 
-    function automatic alu_return_t op_and(                                      //no carry or ovfl for and
-        logic[31:0] p_rs1, p_rs2
+    function automatic alu_return_t op_and(         //no carry or ovfl for and
+        logic[31:0] p_rs1, p_rs2                    //tested
     );  
         logic[31:0] ret = p_rs1 & p_rs2; 
         alu_flags_t flags = '0;
@@ -98,8 +98,8 @@ module alu(
     endfunction
 
 
-    function automatic alu_return_t op_or(                                       //no carry or ovfl for or
-        logic[31:0] p_rs1, p_rs2
+    function automatic alu_return_t op_or(          //no carry or ovfl for or
+        logic[31:0] p_rs1, p_rs2                    //tested
     ); 
         logic[31:0] ret = p_rs1 | p_rs2;
         alu_flags_t flags = '0;
@@ -108,8 +108,8 @@ module alu(
         return {ret, flags};
     endfunction
 
-    function automatic alu_return_t op_xor(                                      //no carry or ovfl for xor
-        logic[31:0] p_rs1, p_rs2
+    function automatic alu_return_t op_xor(         //no carry or ovfl for xor
+        logic[31:0] p_rs1, p_rs2                    //tested
     ); 
         logic[31:0] ret = p_rs1 ^ p_rs2;
         alu_flags_t flags = '0;
@@ -118,40 +118,41 @@ module alu(
         return {ret, flags};
     endfunction
 
-    function automatic alu_return_t op_add(                                      //updates all flags
-        logic[31:0] p_rs1, p_rs2
+    function automatic alu_return_t op_add(         //updates all flags
+        logic[31:0] p_rs1, p_rs2                    //tested
     );
         alu_flags_t flags = '0;
         logic[32:0] tmp = {1'b0, p_rs1} + {1'b0, p_rs2};
         logic[31:0] ret = tmp[31:0];
-        flags.n = ret[31];                                              //if MSB active activate N flag
-        flags.c = tmp[32];                                              //if carry occured activate C flag
-        flags.v = (p_rs1[31] == p_rs2[31]) && (p_rs1[31] != ret[31]);         //if signed overflow occured activate V flag
-        flags.z = (ret == 32'b0);                                 //if 0 activate Z flag
+        flags.n = ret[31];                          //if MSB active activate N flag
+        flags.c = tmp[32];                          //if carry occured activate C flag
+        flags.v = (p_rs1[31] == p_rs2[31]) && 
+                    (p_rs1[31] != ret[31]);         //if signed overflow occured activate V flag
+        flags.z = (ret == 32'b0);                   //if 0 activate Z flag
 
         return {ret, flags};
 
     endfunction
 
-    function automatic alu_return_t op_sub(                                      //2's comp and add
-        logic[31:0] p_rs1, p_rs2 
+    function automatic alu_return_t op_sub(         //2's comp and add
+        logic[31:0] p_rs1, p_rs2                    //tested
     );
-        return op_add(p_rs1, (~p_rs2 + 1'b1));                             //use 2's comp and add
+        return op_add(p_rs1, (~p_rs2 + 1'b1));      //use 2's comp and add
     endfunction
 
-    function automatic alu_return_t op_mul(                                      //no carry or ovfl for mul
-        logic[31:0] p_rs1, p_rs2 
+    function automatic alu_return_t op_mul(         //no carry or ovfl for mul
+        logic[31:0] p_rs1, p_rs2                    //tested
     );
         alu_flags_t flags = '0;
         logic[31:0] ret = p_rs1 * p_rs2;
-        flags.n = ret[31];                                          //if MSB active activate N flag
-        flags.z = (ret == 32'b0);                                   //if carry occured activate C flag
+        flags.n = ret[31];                          //if MSB active activate N flag
+        flags.z = (ret == 32'b0);                   //if carry occured activate C flag
 
         return {ret, flags};
 
     endfunction
 
-    // function automatic alu_return_t op_div (//does not work right now, will implement dividing micro-ops
+    // function automatic alu_return_t op_div (     //does not work right now, will implement dividing micro-ops
     //     logic[31:0] p_rs1, p_rs2
     // ); 
     //     alu_flags_t flags = '0;
@@ -159,8 +160,8 @@ module alu(
     //     return {ret, flags};
     // endfunction
 
-    function automatic alu_return_t op_sl (  //shifts left, c is carry out, V undefined
-        logic[31:0] p_rs1, logic[4:0] shamt
+    function automatic alu_return_t op_sl (         //shifts left, c is carry out, V undefined
+        logic[31:0] p_rs1, logic[4:0] shamt         //tested
     ); 
         alu_flags_t flags = '0;
         logic[31:0] ret = p_rs1 << shamt;
@@ -171,8 +172,8 @@ module alu(
         return {ret, flags};
     endfunction
 
-    function automatic alu_return_t op_lsr ( //shifts right, for unsigned, c is last bit shifted out (shifted out of LSB)
-        logic[31:0] p_rs1, logic[4:0] shamt
+    function automatic alu_return_t op_lsr (        //shifts right, for unsigned, c is last bit shifted out (shifted out of LSB)
+        logic[31:0] p_rs1, logic[4:0] shamt         //tested
     ); 
         alu_flags_t flags = '0;
         logic[31:0] ret = p_rs1 >> shamt;
@@ -184,8 +185,8 @@ module alu(
 
     endfunction
 
-    function automatic alu_return_t op_asr (  //shifts right, for signed, keeps sign c is last bit shifted out (shifted out of LSB)
-        logic[31:0] p_rs1, logic[4:0] shamt
+    function automatic alu_return_t op_asr (        //shifts right, for signed, keeps sign c is last bit shifted out (shifted out of LSB)
+        logic[31:0] p_rs1, logic[4:0] shamt         //tested
     ); 
         alu_flags_t flags = '0;
         logic[31:0] ret = $signed(p_rs1) >>> shamt;
