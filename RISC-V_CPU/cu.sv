@@ -5,6 +5,7 @@ module ControlUnit #(
 );
     
     always_ff @(posedge CLK) begin
-        logic PC[31:0];
+        logic[31:0] pc;
+        logic[31:0] pc;
     end
 endmodule
