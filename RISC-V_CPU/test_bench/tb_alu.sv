@@ -3,14 +3,15 @@
 module tb_alu;
 
     import alu_types::*;
-
+    import global_defs::*;
+    
     // DUT inputs
     logic clk;
     logic [3:0] mode;
-    logic [31:0] rs1, rs2_imm;
+    word_t rs1, rs2_imm;
 
     // DUT outputs
-    logic [31:0] rd;
+    word_t rd;
     alu_flags_t sr_alu_flags;
 
     // Instantiate DUT

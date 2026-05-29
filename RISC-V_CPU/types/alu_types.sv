@@ -1,3 +1,4 @@
+`timescale 1ns/1ps
 
 package alu_types;
     typedef enum logic[3:0] {

@@ -2,9 +2,9 @@
 module alu( 
     input   logic clk, 
     input   alu_running_mode_t mode,
-    output  logic[`WORD_RANGE] rd, 
-    input   logic[`WORD_RANGE] rs1, 
-    input   logic[`WORD_RANGE] rs2_imm,
+    output  word_t rd, 
+    input   word_t rs1, 
+    input   word_t rs2_imm,
     output  alu_flags_t sr_alu_flags
 );
 
@@ -12,7 +12,7 @@ module alu(
     import global_defs::*;
 
     typedef struct packed{
-        logic[DATA_RANGE] result;
+        word_t result;
         alu_flags_t flags;
     } alu_return_t;
     
@@ -78,9 +78,9 @@ module alu(
     endfunction
 
     function automatic alu_return_t op_not(         //no carry or ovfl for not
-        logic[`WORD_RANGE] p_rs1                           //tested
+        word_t p_rs1                           //tested
     ); 
-        logic[`WORD_RANGE] ret = ~p_rs1;
+        word_t ret = ~p_rs1;
         alu_flags_t flags = '0;
         flags.n = (ret[31]);
         flags.z = (ret == 0);
@@ -88,9 +88,9 @@ module alu(
     endfunction
 
     function automatic alu_return_t op_and(         //no carry or ovfl for and
-        logic[`WORD_RANGE] p_rs1, p_rs2                    //tested
+        word_t p_rs1, p_rs2                    //tested
     );  
-        logic[`WORD_RANGE] ret = p_rs1 & p_rs2; 
+        word_t ret = p_rs1 & p_rs2; 
         alu_flags_t flags = '0;
         flags.n = (ret[31]);
         flags.z = (ret == 32'b0); 
@@ -99,9 +99,9 @@ module alu(
 
 
     function automatic alu_return_t op_or(          //no carry or ovfl for or
-        logic[`WORD_RANGE] p_rs1, p_rs2                    //tested
+        word_t p_rs1, p_rs2                    //tested
     ); 
-        logic[`WORD_RANGE] ret = p_rs1 | p_rs2;
+        word_t ret = p_rs1 | p_rs2;
         alu_flags_t flags = '0;
         flags.n = (ret[31]);
         flags.z = (ret == 0);
@@ -109,9 +109,9 @@ module alu(
     endfunction
 
     function automatic alu_return_t op_xor(         //no carry or ovfl for xor
-        logic[`WORD_RANGE] p_rs1, p_rs2                    //tested
+        word_t p_rs1, p_rs2                    //tested
     ); 
-        logic[`WORD_RANGE] ret = p_rs1 ^ p_rs2;
+        word_t ret = p_rs1 ^ p_rs2;
         alu_flags_t flags = '0;
         flags.n = (ret[31]);
         flags.z = (ret == 0);
@@ -119,11 +119,11 @@ module alu(
     endfunction
 
     function automatic alu_return_t op_add(         //updates all flags
-        logic[`WORD_RANGE] p_rs1, p_rs2                    //tested
+        word_t p_rs1, p_rs2                    //tested
     );
         alu_flags_t flags = '0;
         logic[32:0] tmp = {1'b0, p_rs1} + {1'b0, p_rs2};
-        logic[`WORD_RANGE] ret = tmp[`WORD_RANGE];
+        word_t ret = tmp[`WORD_SIZE-1:0];
         flags.n = ret[31];                          //if MSB active activate N flag
         flags.c = tmp[32];                          //if carry occured activate C flag
         flags.v = (p_rs1[31] == p_rs2[31]) && 
@@ -135,16 +135,16 @@ module alu(
     endfunction
 
     function automatic alu_return_t op_sub(         //2's comp and add
-        logic[`WORD_RANGE] p_rs1, p_rs2                    //tested
+        word_t p_rs1, p_rs2                    //tested
     );
         return op_add(p_rs1, (~p_rs2 + 1'b1));      //use 2's comp and add
     endfunction
 
     function automatic alu_return_t op_mul(         //no carry or ovfl for mul
-        logic[`WORD_RANGE] p_rs1, p_rs2                    //tested
+        word_t p_rs1, p_rs2                    //tested
     );
         alu_flags_t flags = '0;
-        logic[`WORD_RANGE] ret = p_rs1 * p_rs2;
+        word_t ret = p_rs1 * p_rs2;
         flags.n = ret[31];                          //if MSB active activate N flag
         flags.z = (ret == 32'b0);                   //if carry occured activate C flag
 
@@ -153,18 +153,18 @@ module alu(
     endfunction
 
     // function automatic alu_return_t op_div (     //does not work right now, will implement dividing micro-ops
-    //     logic[`WORD_RANGE] p_rs1, p_rs2
+    //     word_t p_rs1, p_rs2
     // ); 
     //     alu_flags_t flags = '0;
-    //     logic[`WORD_RANGE] ret = '0;
+    //     word_t ret = '0;
     //     return {ret, flags};
     // endfunction
 
     function automatic alu_return_t op_sl (         //shifts left, c is carry out, V undefined
-        logic[`WORD_RANGE] p_rs1, logic[4:0] shamt         //tested
+        word_t p_rs1, logic[4:0] shamt         //tested
     ); 
         alu_flags_t flags = '0;
-        logic[`WORD_RANGE] ret = p_rs1 << shamt;
+        word_t ret = p_rs1 << shamt;
         flags.n = ret[31];
         flags.c = (shamt == 0) ?
             1'b0 : p_rs1[shamt - 1];
@@ -173,10 +173,10 @@ module alu(
     endfunction
 
     function automatic alu_return_t op_lsr (        //shifts right, for unsigned, c is last bit shifted out (shifted out of LSB)
-        logic[`WORD_RANGE] p_rs1, logic[4:0] shamt         //tested
+        word_t p_rs1, logic[4:0] shamt         //tested
     ); 
         alu_flags_t flags = '0;
-        logic[`WORD_RANGE] ret = p_rs1 >> shamt;
+        word_t ret = p_rs1 >> shamt;
         flags.n = ret[31];
         flags.c = (shamt == 0) ?
             1'b0 : p_rs1[shamt - 1];
@@ -186,10 +186,10 @@ module alu(
     endfunction
 
     function automatic alu_return_t op_asr (        //shifts right, for signed, keeps sign c is last bit shifted out (shifted out of LSB)
-        logic[`WORD_RANGE] p_rs1, logic[4:0] shamt         //tested
+        word_t p_rs1, logic[4:0] shamt         //tested
     ); 
         alu_flags_t flags = '0;
-        logic[`WORD_RANGE] ret = $signed(p_rs1) >>> shamt;
+        word_t ret = $signed(p_rs1) >>> shamt;
         flags.n = ret[31];
         flags.c = (shamt == 0) ?
             1'b0 : p_rs1[shamt - 1];
@@ -202,7 +202,7 @@ endmodule
 
 /*
 function alu_return_t div(      //32-b return + 4 bit flags
-    logic[`WORD_RANGE] rs1, rs2 
+    word_t rs1, rs2 
 );
     alu_flags_t flags = '0;
     logic[32:0] ret = {1'b0, rs1} + {1'b0, rs2};
@@ -223,9 +223,9 @@ endfunction
 
 /*
 function alu_return_t nan(
-    logic[`WORD_RANGE] rs1, rs2
+    word_t rs1, rs2
 ); 
-    logic[`WORD_RANGE] ret = rs1 & rs2;
+    word_t ret = rs1 & rs2;
     alu_flags_t flags = '0;
     flags.n = (ret[31]);
     flags.z = (ret == 0);
@@ -233,9 +233,9 @@ function alu_return_t nan(
 endfunction
 
 function alu_return_t nor(
-    logic[`WORD_RANGE] rs1, rs2
+    word_t rs1, rs2
 ); 
-    logic[`WORD_RANGE] ret = rs1 & rs2;
+    word_t ret = rs1 & rs2;
     alu_flags_t flags = '0;
     flags.n = (ret[31]);
     flags.z = (ret == 0);
