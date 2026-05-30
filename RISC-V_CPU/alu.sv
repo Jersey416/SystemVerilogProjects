@@ -8,9 +8,8 @@ module alu(
     output  alu_flags_t sr_alu_flags
 );
 
-    import alu_types::*;
-    import global_defs::*;
-
+    import alu_types::*;        //imports : 
+    import global_defs::*;      //imports : `WORD_SIZE, word_t
     typedef struct packed{
         word_t result;
         alu_flags_t flags;

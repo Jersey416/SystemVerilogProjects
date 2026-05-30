@@ -1,6 +1,6 @@
 `timescale 1ns/1ps
 
-module tb_alu;
+module alu_tb;
 
     import alu_types::*;
     import global_defs::*;
@@ -60,8 +60,6 @@ module tb_alu;
 
         #10;
 
-
-
         run_test(LSL, 32'hFFFF_FFFF, 32'h1 , 32'hFFFF_FFFE);
         run_test(ASL, 32'hFFFF_FFFF, 32'h4 , 32'hFFFF_FFF0);
         run_test(LSL, 32'h1, 32'hFFFF_FFFF , 32'h8000_0000);
@@ -74,7 +72,6 @@ module tb_alu;
         run_test(ASR, 32'hFFFF_FF0F, 32'h4 , 32'hFFFF_FFF0);
         run_test(ASR, 32'h8000_0000, 32'hFFFF_FFFF , 32'hFFFF_FFFF);
         run_test(ASR, 32'h8000_0000, 32'hFFFF_FFFE , 32'hFFFF_FFFE);
-/*
         run_test(MUL, 32'hFFFF_FFFF, 32'h1 , 32'hFFFF_FFFF);
         run_test(MUL, 32'hFFFF_FFFF, 32'h0 , 32'h0);
         run_test(MUL, 2, 1, 2);
@@ -101,7 +98,8 @@ module tb_alu;
         run_test(SUB, 10, 10, 0);    // SUB (example)
         run_test(SUB, 10, 11, -1);    // SUB (example)
         run_test(SUB, 32'h8000_0000, 32'h1, 32'h7FFF_FFFF);    // SUB (example)
-*/
+
+
         $display("All tests done.");
         $finish;
     end

@@ -10,8 +10,9 @@ package rf_types;
         S4, S5, S6, S7, 
         S8, S9, S10, S11, 
         T3, T4, T5, T6
-    } alu_running_mode_t;
-
+    } reg_addr_t;
+    
+    `define FP S0;      //do this for now until TODO find out how parameter works
     //parameter FP = S0;
 
 endpackage
