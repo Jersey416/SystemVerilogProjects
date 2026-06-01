@@ -16,8 +16,8 @@ module rf(
 
     always_ff @(posedge clk) begin
         
-        assign rdata1 = r[raddr1];
-        assign rdata0 = r[raddr0];
+        rdata1 = r[raddr1];
+        rdata0 = r[raddr0];
         
         if(! rst) begin
             r <= '{default: '0};    
