@@ -1,7 +1,9 @@
 
+//TODO adjust alu_types to optimize for opcodes
+
 module alu( 
     input   logic clk, 
-    input   alu_running_mode_t mode,
+    input   alu_mode_t mode,
     output  word_t rd, 
     input   word_t rs1, 
     input   word_t rs2_imm,
